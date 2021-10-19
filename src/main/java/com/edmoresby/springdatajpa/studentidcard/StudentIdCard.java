@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Table(
         name = "student_id_card",
         uniqueConstraints = @UniqueConstraint(
-                name = "student_id_card_number_unique",
-                columnNames = "cardNumber"
+                name = "student_id_card_student_unique",
+                columnNames = "card_number"
         )
 )
 public class StudentIdCard {

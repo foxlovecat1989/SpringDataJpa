@@ -1,8 +1,11 @@
 package com.edmoresby.springdatajpa.student;
 
+import com.edmoresby.springdatajpa.book.Book;
 import com.edmoresby.springdatajpa.studentidcard.StudentIdCard;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Student")
 @Table(
@@ -58,11 +61,19 @@ public class Student {
 
     @OneToOne(
             mappedBy = "student",
-            cascade = {CascadeType.ALL},
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
     private StudentIdCard studentIdCard;
+
+    @OneToMany(
+            mappedBy = "student",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            fetch = FetchType.EAGER,
+            orphanRemoval = true
+    )
+    private List<Book> books = new ArrayList<>();
 
     public Student() {
     }
@@ -72,14 +83,6 @@ public class Student {
         this.lastName = lastName;
         this.email = email;
         this.age = age;
-    }
-
-    public Student(String firstName, String lastName, String email, Integer age, StudentIdCard studentIdCard) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.age = age;
-        this.studentIdCard = studentIdCard;
     }
 
     public Long getId() {
@@ -130,6 +133,28 @@ public class Student {
         this.studentIdCard = studentIdCard;
     }
 
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    public void addBook(Book book) {
+        if (!this.books.contains(book)) {
+            this.books.add(book);
+            book.setStudent(this);
+        }
+    }
+
+    public void removeBook(Book book) {
+        if (this.books.contains(book)) {
+            this.books.remove(book);
+            book.setStudent(null);
+        }
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -138,8 +163,8 @@ public class Student {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
-                ", cardNumber=" + studentIdCard.getCardNumber() +
+                ", studentIdCard=" + studentIdCard.getCardNumber() +
+                ", books=" + books +
                 '}';
     }
-
 }

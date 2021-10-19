@@ -1,15 +1,17 @@
 package com.edmoresby.springdatajpa;
 
+import com.edmoresby.springdatajpa.book.Book;
 import com.edmoresby.springdatajpa.student.Student;
 import com.edmoresby.springdatajpa.student.StudentRepository;
 import com.edmoresby.springdatajpa.studentidcard.StudentIdCard;
 import com.github.javafaker.Faker;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +47,9 @@ public class SpringDataJpaApplication {
             StudentIdCard studentIdCard = generateRandomStudentIdCard(student);
             student.setStudentIdCard(studentIdCard);
 
+            List<Book> books = generateRandomBooks(faker.number().numberBetween(1, 3));
+            books.stream().forEach(book -> student.addBook(book));
+
             students.add(student);
         }
 
@@ -58,6 +63,16 @@ public class SpringDataJpaApplication {
                         student);
 
         return studentIdCard;
+    }
+
+    private List<Book> generateRandomBooks(Integer amount){
+        List<Book> books = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            Book book = new Book(faker.book().title(), LocalDateTime.now().minusDays(faker.number().numberBetween(1L, 3000L)));
+            books.add(book);
+        }
+
+        return books;
     }
 
 
