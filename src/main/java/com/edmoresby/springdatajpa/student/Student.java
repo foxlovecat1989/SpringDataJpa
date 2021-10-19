@@ -1,5 +1,7 @@
 package com.edmoresby.springdatajpa.student;
 
+import com.edmoresby.springdatajpa.studentidcard.StudentIdCard;
+
 import javax.persistence.*;
 
 @Entity(name = "Student")
@@ -53,6 +55,14 @@ public class Student {
     )
     private Integer age;
 
+    @OneToOne(
+            mappedBy = "student",
+            cascade = {CascadeType.ALL},
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
+    private StudentIdCard studentIdCard;
+
     public Student() {
     }
 
@@ -61,6 +71,14 @@ public class Student {
         this.lastName = lastName;
         this.email = email;
         this.age = age;
+    }
+
+    public Student(String firstName, String lastName, String email, Integer age, StudentIdCard studentIdCard) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.age = age;
+        this.studentIdCard = studentIdCard;
     }
 
     public Long getId() {
@@ -103,6 +121,14 @@ public class Student {
         this.age = age;
     }
 
+    public StudentIdCard getStudentIdCard() {
+        return studentIdCard;
+    }
+
+    public void setStudentIdCard(StudentIdCard studentIdCard) {
+        this.studentIdCard = studentIdCard;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -111,6 +137,7 @@ public class Student {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
+                ", studentIdCard=" + studentIdCard +
                 '}';
     }
 }
