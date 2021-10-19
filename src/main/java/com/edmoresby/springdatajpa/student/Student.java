@@ -137,7 +137,8 @@ public class Student {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
-                ", studentIdCard=" + studentIdCard +
+                ", cardNumber=" + studentIdCard.getCardNumber() +
                 '}';
     }
+
 }
