@@ -5,7 +5,13 @@ import com.edmoresby.springdatajpa.student.Student;
 import javax.persistence.*;
 
 @Entity(name = "StudentIdCard")
-@Table(name = "student_id_card")
+@Table(
+        name = "student_id_card",
+        uniqueConstraints = @UniqueConstraint(
+                name = "student_id_card_number_unique",
+                columnNames = "cardNumber"
+        )
+)
 public class StudentIdCard {
 
     @SequenceGenerator(
@@ -18,7 +24,10 @@ public class StudentIdCard {
             generator = "student_id_card_sequence"
     )
     @Id
-    @Column(name = "id")
+    @Column(
+            name = "id",
+            nullable = false
+    )
     private Long id;
 
     @Column(

@@ -24,7 +24,8 @@ public class Student {
             generator = "student_sequence"
     )
     @Column(
-            name = "id"
+            name = "id",
+            nullable = false
     )
     private Long id;
 
