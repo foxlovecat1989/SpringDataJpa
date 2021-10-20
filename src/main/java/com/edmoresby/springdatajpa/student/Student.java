@@ -70,7 +70,7 @@ public class Student {
     @OneToMany(
             mappedBy = "student",
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             orphanRemoval = true
     )
     private List<Book> books = new ArrayList<>();
@@ -163,8 +163,6 @@ public class Student {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
-                ", studentIdCard=" + studentIdCard.getCardNumber() +
-                ", books=" + books +
                 '}';
     }
 }

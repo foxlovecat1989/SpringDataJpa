@@ -1,6 +1,7 @@
 package com.edmoresby.springdatajpa;
 
 import com.edmoresby.springdatajpa.book.Book;
+import com.edmoresby.springdatajpa.book.BookRepository;
 import com.edmoresby.springdatajpa.student.Student;
 import com.edmoresby.springdatajpa.student.StudentRepository;
 import com.edmoresby.springdatajpa.studentidcard.StudentIdCard;
@@ -26,15 +27,22 @@ public class SpringDataJpaApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(StudentRepository studentRepository){
-        return  args -> {
-            List<Student> students = generateRandomStudents(20, studentRepository);
+    CommandLineRunner commandLineRunner(
+            StudentRepository studentRepository,
+            BookRepository bookRepository) {
+        return args -> {
+            List<Student> students = generateRandomStudents(20);
             studentRepository.saveAll(students);
-            studentRepository.findAll().forEach(System.out::println);
+            Student student = studentRepository.findById(1L).get();
+            bookRepository
+                    .findBooksByStudentId(student.getId())
+                    .stream()
+                    .map(Book::getName)
+                    .forEach(System.out::println);
         };
     }
 
-    private List<Student> generateRandomStudents(Integer amount, StudentRepository studentRepository){
+    private List<Student> generateRandomStudents(Integer amount){
         List<Student> students = new ArrayList<>();
 
         for (int i = 0; i < amount; i++) {
@@ -77,3 +85,5 @@ public class SpringDataJpaApplication {
 
 
 }
+
+
